@@ -7,445 +7,261 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Apple-inspired styles */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            background-color: #f5f7fa;
-        }
-        
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease forwards;
-        }
-        
-        .slide-up {
-            animation: slideUp 0.4s ease forwards;
-        }
-        
-        /* Accessibility focus styles */
-        *:focus {
-            outline: 2px solid #0071e3;
-            outline-offset: 2px;
-        }
-        
-        /* Card hover effects */
-        .news-card {
-            transition: all 0.3s ease;
-        }
-        
         .news-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
-        
-        /* Context panel transitions */
         .ai-context-panel {
+            transition: all 0.3s ease;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
         .ai-context-panel.active {
             max-height: 500px;
         }
-        
-        /* Custom scrollbar for iOS feel */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        .gradient-bg {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
-        
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        .category-tag {
+            transition: all 0.2s ease;
         }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.2);
+        .category-tag:hover {
+            transform: scale(1.05);
         }
-        
-        /* High contrast mode support */
-        @media (prefers-contrast: more) {
-            .text-gray-500, .text-gray-600, .text-gray-700 {
-                color: #000000;
-            }
-            
-            .bg-gray-50, .bg-gray-100, .bg-gray-200 {
-                background-color: #ffffff;
-                border: 1px solid #000000;
-            }
+        .pulse-animation {
+            animation: pulse 2s infinite;
         }
-        
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #121212;
-                color: #f5f5f7;
-            }
-            
-            .bg-white {
-                background-color: #1c1c1e;
-            }
-            
-            .text-gray-800 {
-                color: #f5f5f7;
-            }
-            
-            .text-gray-600, .text-gray-700 {
-                color: #d1d1d6;
-            }
-            
-            .border-gray-200, .border-gray-300 {
-                border-color: #3a3a3c;
-            }
-            
-            .bg-gray-50, .bg-gray-200 {
-                background-color: #2c2c2e;
-            }
-            
-            .bg-blue-50 {
-                background-color: rgba(10, 132, 255, 0.1);
-            }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
-<body class="min-h-screen">
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
-        <!-- Header Component -->
-        <header class="mb-8" role="banner">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                <div class="flex items-center mb-4 md:mb-0">
-                    <i class="fas fa-newspaper text-3xl text-blue-500 mr-3" aria-hidden="true"></i>
-                    <h1 class="text-3xl font-semibold text-gray-800">AI Context Newsstand</h1>
-                </div>
-                <div class="relative w-full md:w-64">
-                    <label for="search" class="sr-only">Search news</label>
-                    <input 
-                        id="search" 
-                        type="search" 
-                        placeholder="Search news..." 
-                        class="w-full px-4 py-2 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        aria-label="Search news articles"
-                    >
-                    <button class="absolute right-3 top-2 text-gray-500 hover:text-blue-500" aria-label="Submit search">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                    </button>
-                </div>
+<body class="gradient-bg min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-12">
+            <div class="flex items-center mb-4 md:mb-0">
+                <i class="fas fa-newspaper text-4xl text-blue-600 mr-3"></i>
+                <h1 class="text-3xl font-bold text-gray-800">AI Context Newsstand</h1>
             </div>
-            
-            <!-- Categories Component -->
-            <nav class="mb-8" aria-label="News categories">
-                <div class="flex flex-wrap gap-2">
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded-full font-medium shadow-sm transition-all hover:bg-blue-600" aria-current="page">All</button>
-                    <button class="bg-white text-gray-800 px-4 py-2 rounded-full font-medium shadow-sm transition-all hover:bg-gray-100">Politics</button>
-                    <button class="bg-white text-gray-800 px-4 py-2 rounded-full font-medium shadow-sm transition-all hover:bg-gray-100">Technology</button>
-                    <button class="bg-white text-gray-800 px-4 py-2 rounded-full font-medium shadow-sm transition-all hover:bg-gray-100">Business</button>
-                    <button class="bg-white text-gray-800 px-4 py-2 rounded-full font-medium shadow-sm transition-all hover:bg-gray-100">Health</button>
-                    <button class="bg-white text-gray-800 px-4 py-2 rounded-full font-medium shadow-sm transition-all hover:bg-gray-100">Science</button>
-                    <button class="bg-white text-gray-800 px-4 py-2 rounded-full font-medium shadow-sm transition-all hover:bg-gray-100">Sports</button>
-                </div>
-            </nav>
+            <div class="relative w-full md:w-64">
+                <input type="text" placeholder="Search news..." class="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
         </header>
 
-        <!-- Featured Article Component -->
-        <section class="mb-10 slide-up" aria-labelledby="featured-heading">
-            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-                <div class="md:flex">
-                    <div class="md:w-2/3 p-6 md:p-8">
-                        <div class="flex items-center mb-4">
-                            <span class="bg-red-500 text-white text-xs px-3 py-1 rounded-full mr-3" aria-label="Breaking news">Breaking</span>
-                            <span class="text-gray-500 text-sm">2 hours ago</span>
-                        </div>
-                        <h2 id="featured-heading" class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Global AI Summit Concludes with Historic Agreement on Ethical Guidelines</h2>
-                        <p class="text-gray-600 mb-6">World leaders and tech executives have reached a landmark agreement on AI development principles, marking a turning point in international tech policy.</p>
-                        <div class="flex flex-wrap gap-3">
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full font-medium shadow-sm transition-all" aria-label="Read full story about AI Summit">
-                                Read Full Story
-                            </button>
-                            <button 
-                                id="featured-context-btn"
-                                class="ai-context-btn flex items-center text-blue-500 hover:text-blue-600 font-medium px-6 py-3 border border-blue-500 rounded-full hover:bg-blue-50 transition-all" 
-                                data-id="featured"
-                                aria-expanded="false"
-                                aria-controls="featured-context"
-                            >
-                                <i class="fas fa-robot mr-2" aria-hidden="true"></i> 
-                                Why This Matters
-                            </button>
-                        </div>
+        <!-- Categories -->
+        <div class="flex flex-wrap gap-3 mb-8">
+            <button class="category-tag bg-blue-600 text-white px-4 py-1 rounded-full font-medium">All</button>
+            <button class="category-tag bg-gray-200 hover:bg-gray-300 px-4 py-1 rounded-full font-medium">Politics</button>
+            <button class="category-tag bg-gray-200 hover:bg-gray-300 px-4 py-1 rounded-full font-medium">Technology</button>
+            <button class="category-tag bg-gray-200 hover:bg-gray-300 px-4 py-1 rounded-full font-medium">Business</button>
+            <button class="category-tag bg-gray-200 hover:bg-gray-300 px-4 py-1 rounded-full font-medium">Health</button>
+            <button class="category-tag bg-gray-200 hover:bg-gray-300 px-4 py-1 rounded-full font-medium">Science</button>
+            <button class="category-tag bg-gray-200 hover:bg-gray-300 px-4 py-1 rounded-full font-medium">Sports</button>
+        </div>
+
+        <!-- Featured Article -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-10">
+            <div class="md:flex">
+                <div class="md:w-2/3 p-6">
+                    <div class="flex items-center mb-4">
+                        <span class="bg-red-600 text-white text-xs px-2 py-1 rounded mr-2">Breaking</span>
+                        <span class="text-gray-500 text-sm">2 hours ago</span>
                     </div>
-                    <div class="md:w-1/3">
-                        <img 
-                            src="/api/placeholder/400/300" 
-                            alt="AI Summit with world leaders and tech executives" 
-                            class="w-full h-full object-cover"
-                        >
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Global AI Summit Concludes with Historic Agreement on Ethical Guidelines</h2>
+                    <p class="text-gray-600 mb-6">World leaders and tech executives have reached a landmark agreement on AI development principles, marking a turning point in international tech policy.</p>
+                    <div class="flex items-center">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium mr-4">Read Full Story</button>
+                        <button class="ai-context-btn flex items-center text-blue-600 font-medium" data-id="featured">
+                            <i class="fas fa-robot mr-2"></i> Why This Matters
+                        </button>
                     </div>
                 </div>
-                
+                <div class="md:w-1/3">
+                    <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="AI Summit" class="w-full h-full object-cover">
+                </div>
+            </div>
+            <!-- AI Context Panel -->
+            <div id="featured-context" class="ai-context-panel bg-blue-50 border-t border-blue-100">
+                <div class="p-6">
+                    <div class="flex items-start mb-4">
+                        <div class="bg-blue-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-robot text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">AI Context Analysis</h3>
+                            <p class="text-gray-700">This agreement represents the first comprehensive international framework for AI development. It matters because:</p>
+                            <ul class="list-disc pl-5 mt-2 text-gray-700 space-y-1">
+                                <li>Sets precedent for global tech governance cooperation</li>
+                                <li>Could prevent harmful AI applications before they emerge</li>
+                                <li>Creates standards that may influence national regulations</li>
+                                <li>Signals tech giants must consider societal impacts</li>
+                                <li>May accelerate responsible AI innovation</li>
+                            </ul>
+                            <div class="mt-4 text-sm text-gray-500 flex items-center">
+                                <i class="fas fa-info-circle mr-1"></i> Analysis powered by AI Context Engine
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- News Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <!-- Article 1 -->
+            <div class="news-card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Tech" class="w-full h-48 object-cover">
+                <div class="p-5">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="bg-green-600 text-white text-xs px-2 py-1 rounded">Technology</span>
+                        <span class="text-gray-500 text-sm">5 hours ago</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">New Quantum Computing Breakthrough Could Revolutionize Encryption</h3>
+                    <p class="text-gray-600 mb-4">Researchers have demonstrated a quantum algorithm that solves problems considered impossible for classical computers.</p>
+                    <div class="flex justify-between items-center">
+                        <button class="text-blue-600 font-medium hover:underline">Read More</button>
+                        <button class="ai-context-btn flex items-center text-gray-500 hover:text-blue-600 text-sm" data-id="article1">
+                            <i class="fas fa-robot mr-1"></i> Context
+                        </button>
+                    </div>
+                </div>
                 <!-- AI Context Panel -->
-                <div 
-                    id="featured-context" 
-                    class="ai-context-panel bg-blue-50 border-t border-blue-100"
-                    aria-labelledby="featured-context-heading"
-                >
-                    <div class="p-6 md:p-8">
+                <div id="article1-context" class="ai-context-panel bg-gray-50 border-t border-gray-200">
+                    <div class="p-5">
                         <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4 shrink-0">
-                                <i class="fas fa-robot text-blue-500 text-xl" aria-hidden="true"></i>
+                            <div class="bg-gray-200 p-2 rounded-full mr-3">
+                                <i class="fas fa-robot text-gray-600"></i>
                             </div>
                             <div>
-                                <h3 id="featured-context-heading" class="font-bold text-lg text-gray-800 mb-2">AI Context Analysis</h3>
-                                <p class="text-gray-700">This agreement represents the first comprehensive international framework for AI development. It matters because:</p>
-                                <ul class="list-disc pl-5 mt-3 text-gray-700 space-y-2">
-                                    <li>Sets precedent for global tech governance cooperation</li>
-                                    <li>Could prevent harmful AI applications before they emerge</li>
-                                    <li>Creates standards that may influence national regulations</li>
-                                    <li>Signals tech giants must consider societal impacts</li>
-                                    <li>May accelerate responsible AI innovation</li>
+                                <h4 class="font-bold text-gray-800 mb-1">Why This Matters</h4>
+                                <p class="text-gray-700 text-sm">This breakthrough challenges current encryption standards that protect everything from banking to national security. The implications include:</p>
+                                <ul class="list-disc pl-4 mt-1 text-sm text-gray-700 space-y-1">
+                                    <li>Urgent need for quantum-resistant cryptography</li>
+                                    <li>Potential to solve complex problems in medicine and logistics</li>
+                                    <li>New arms race in quantum computing capabilities</li>
                                 </ul>
-                                <div class="mt-4 text-sm text-gray-500 flex items-center">
-                                    <i class="fas fa-info-circle mr-1" aria-hidden="true"></i> Analysis powered by AI Context Engine
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- News Grid Component -->
-        <section class="mb-12" aria-labelledby="latest-news-heading">
-            <h2 id="latest-news-heading" class="sr-only">Latest News Articles</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Article Card Component 1 -->
-                <article class="news-card bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 fade-in" aria-labelledby="article1-heading">
-                    <img 
-                        src="/api/placeholder/400/200" 
-                        alt="Quantum computer in a research lab" 
-                        class="w-full h-48 object-cover"
-                    >
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full">Technology</span>
-                            <span class="text-gray-500 text-sm">5 hours ago</span>
-                        </div>
-                        <h3 id="article1-heading" class="text-xl font-bold text-gray-800 mb-3">New Quantum Computing Breakthrough Could Revolutionize Encryption</h3>
-                        <p class="text-gray-600 mb-4">Researchers have demonstrated a quantum algorithm that solves problems considered impossible for classical computers.</p>
-                        <div class="flex justify-between items-center">
-                            <button class="text-blue-500 font-medium hover:underline" aria-label="Read more about quantum computing breakthrough">Read More</button>
-                            <button 
-                                class="ai-context-btn flex items-center text-gray-500 hover:text-blue-500 text-sm px-3 py-1 rounded-full hover:bg-gray-100 transition-all" 
-                                data-id="article1"
-                                aria-expanded="false"
-                                aria-controls="article1-context"
-                            >
-                                <i class="fas fa-robot mr-1" aria-hidden="true"></i> Context
-                            </button>
-                        </div>
+            <!-- Article 2 -->
+            <div class="news-card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300">
+                <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Business" class="w-full h-48 object-cover">
+                <div class="p-5">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="bg-purple-600 text-white text-xs px-2 py-1 rounded">Business</span>
+                        <span class="text-gray-500 text-sm">8 hours ago</span>
                     </div>
-                    
-                    <!-- AI Context Panel -->
-                    <div 
-                        id="article1-context" 
-                        class="ai-context-panel bg-gray-50 border-t border-gray-200"
-                        aria-labelledby="article1-context-heading"
-                    >
-                        <div class="p-6">
-                            <div class="flex items-start">
-                                <div class="bg-gray-200 p-2 rounded-full mr-3 shrink-0">
-                                    <i class="fas fa-robot text-gray-600" aria-hidden="true"></i>
-                                </div>
-                                <div>
-                                    <h4 id="article1-context-heading" class="font-bold text-gray-800 mb-2">Why This Matters</h4>
-                                    <p class="text-gray-700 text-sm">This breakthrough challenges current encryption standards that protect everything from banking to national security. The implications include:</p>
-                                    <ul class="list-disc pl-5 mt-2 text-sm text-gray-700 space-y-1">
-                                        <li>Urgent need for quantum-resistant cryptography</li>
-                                        <li>Potential to solve complex problems in medicine and logistics</li>
-                                        <li>New arms race in quantum computing capabilities</li>
-                                    </ul>
-                                </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Major Retail Chains Report Record Adoption of AI Shopping Assistants</h3>
+                    <p class="text-gray-600 mb-4">Over 60% of customers now prefer AI-powered shopping tools according to new industry data.</p>
+                    <div class="flex justify-between items-center">
+                        <button class="text-blue-600 font-medium hover:underline">Read More</button>
+                        <button class="ai-context-btn flex items-center text-gray-500 hover:text-blue-600 text-sm" data-id="article2">
+                            <i class="fas fa-robot mr-1"></i> Context
+                        </button>
+                    </div>
+                </div>
+                <!-- AI Context Panel -->
+                <div id="article2-context" class="ai-context-panel bg-gray-50 border-t border-gray-200">
+                    <div class="p-5">
+                        <div class="flex items-start">
+                            <div class="bg-gray-200 p-2 rounded-full mr-3">
+                                <i class="fas fa-robot text-gray-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Why This Matters</h4>
+                                <p class="text-gray-700 text-sm">This shift represents a fundamental change in consumer behavior with wide-ranging implications:</p>
+                                <ul class="list-disc pl-4 mt-1 text-sm text-gray-700 space-y-1">
+                                    <li>Traditional customer service roles may decline</li>
+                                    <li>Retailers gain unprecedented insight into shopping habits</li>
+                                    <li>Potential for hyper-personalized marketing raises privacy concerns</li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
-                </article>
-
-                <!-- Article Card Component 2 -->
-                <article class="news-card bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 fade-in" aria-labelledby="article2-heading">
-                    <img 
-                        src="/api/placeholder/400/200" 
-                        alt="Person shopping using a mobile device with AI assistant" 
-                        class="w-full h-48 object-cover"
-                    >
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="bg-purple-500 text-white text-xs px-3 py-1 rounded-full">Business</span>
-                            <span class="text-gray-500 text-sm">8 hours ago</span>
-                        </div>
-                        <h3 id="article2-heading" class="text-xl font-bold text-gray-800 mb-3">Major Retail Chains Report Record Adoption of AI Shopping Assistants</h3>
-                        <p class="text-gray-600 mb-4">Over 60% of customers now prefer AI-powered shopping tools according to new industry data.</p>
-                        <div class="flex justify-between items-center">
-                            <button class="text-blue-500 font-medium hover:underline" aria-label="Read more about AI shopping assistants">Read More</button>
-                            <button 
-                                class="ai-context-btn flex items-center text-gray-500 hover:text-blue-500 text-sm px-3 py-1 rounded-full hover:bg-gray-100 transition-all" 
-                                data-id="article2"
-                                aria-expanded="false"
-                                aria-controls="article2-context"
-                            >
-                                <i class="fas fa-robot mr-1" aria-hidden="true"></i> Context
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- AI Context Panel -->
-                    <div 
-                        id="article2-context" 
-                        class="ai-context-panel bg-gray-50 border-t border-gray-200"
-                        aria-labelledby="article2-context-heading"
-                    >
-                        <div class="p-6">
-                            <div class="flex items-start">
-                                <div class="bg-gray-200 p-2 rounded-full mr-3 shrink-0">
-                                    <i class="fas fa-robot text-gray-600" aria-hidden="true"></i>
-                                </div>
-                                <div>
-                                    <h4 id="article2-context-heading" class="font-bold text-gray-800 mb-2">Why This Matters</h4>
-                                    <p class="text-gray-700 text-sm">This shift represents a fundamental change in consumer behavior with wide-ranging implications:</p>
-                                    <ul class="list-disc pl-5 mt-2 text-sm text-gray-700 space-y-1">
-                                        <li>Traditional customer service roles may decline</li>
-                                        <li>Retailers gain unprecedented insight into shopping habits</li>
-                                        <li>Potential for hyper-personalized marketing raises privacy concerns</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Article Card Component 3 -->
-                <article class="news-card bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 fade-in" aria-labelledby="article3-heading">
-                    <img 
-                        src="/api/placeholder/400/200" 
-                        alt="Medical professional reviewing AI diagnostic results" 
-                        class="w-full h-48 object-cover"
-                    >
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full">Health</span>
-                            <span class="text-gray-500 text-sm">1 day ago</span>
-                        </div>
-                        <h3 id="article3-heading" class="text-xl font-bold text-gray-800 mb-3">AI Diagnostic Tool Outperforms Doctors in Early Cancer Detection</h3>
-                        <p class="text-gray-600 mb-4">Clinical trials show the system detects subtle patterns missed by human experts, improving early diagnosis rates by 22%.</p>
-                        <div class="flex justify-between items-center">
-                            <button class="text-blue-500 font-medium hover:underline" aria-label="Read more about AI cancer detection">Read More</button>
-                            <button 
-                                class="ai-context-btn flex items-center text-gray-500 hover:text-blue-500 text-sm px-3 py-1 rounded-full hover:bg-gray-100 transition-all" 
-                                data-id="article3"
-                                aria-expanded="false"
-                                aria-controls="article3-context"
-                            >
-                                <i class="fas fa-robot mr-1" aria-hidden="true"></i> Context
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- AI Context Panel -->
-                    <div 
-                        id="article3-context" 
-                        class="ai-context-panel bg-gray-50 border-t border-gray-200"
-                        aria-labelledby="article3-context-heading"
-                    >
-                        <div class="p-6">
-                            <div class="flex items-start">
-                                <div class="bg-gray-200 p-2 rounded-full mr-3 shrink-0">
-                                    <i class="fas fa-robot text-gray-600" aria-hidden="true"></i>
-                                </div>
-                                <div>
-                                    <h4 id="article3-context-heading" class="font-bold text-gray-800 mb-2">Why This Matters</h4>
-                                    <p class="text-gray-700 text-sm">This advancement could transform healthcare delivery and outcomes:</p>
-                                    <ul class="list-disc pl-5 mt-2 text-sm text-gray-700 space-y-1">
-                                        <li>Potential to save thousands of lives through earlier treatment</li>
-                                        <li>Raises questions about doctor-AI collaboration models</li>
-                                        <li>May reduce healthcare costs through preventive care</li>
-                                        <li>Highlights need for regulatory frameworks for medical AI</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- Newsletter Component -->
-        <section class="mb-12 slide-up" aria-labelledby="newsletter-heading">
-            <div class="bg-white rounded-2xl shadow-md p-6 md:p-8">
-                <div class="md:flex items-center justify-between">
-                    <div class="md:w-2/3 mb-6 md:mb-0">
-                        <h2 id="newsletter-heading" class="text-2xl font-bold text-gray-800 mb-2">Get AI Context Delivered Daily</h2>
-                        <p class="text-gray-600">Subscribe to our newsletter and receive AI-powered analysis of the day's most important stories.</p>
-                    </div>
-                    <div class="md:w-1/3">
-                        <form class="flex flex-col sm:flex-row">
-                            <label for="email" class="sr-only">Email address</label>
-                            <input 
-                                id="email" 
-                                type="email" 
-                                placeholder="Your email" 
-                                class="flex-grow px-4 py-3 rounded-l-full sm:rounded-r-none rounded-r-full sm:mb-0 mb-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                                aria-label="Email for newsletter"
-                            >
-                            <button 
-                                type="submit" 
-                                class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-r-full sm:rounded-l-none rounded-l-full font-medium shadow-sm transition-all"
-                                aria-label="Subscribe to newsletter"
-                            >
-                                Subscribe
-                            </button>
-                        </form>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Footer Component -->
-        <footer class="border-t border-gray-200 pt-8" role="contentinfo">
+            <!-- Article 3 -->
+            <div class="news-card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300">
+                <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Health" class="w-full h-48 object-cover">
+                <div class="p-5">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">Health</span>
+                        <span class="text-gray-500 text-sm">1 day ago</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">AI Diagnostic Tool Outperforms Doctors in Early Cancer Detection</h3>
+                    <p class="text-gray-600 mb-4">Clinical trials show the system detects subtle patterns missed by human experts, improving early diagnosis rates by 22%.</p>
+                    <div class="flex justify-between items-center">
+                        <button class="text-blue-600 font-medium hover:underline">Read More</button>
+                        <button class="ai-context-btn flex items-center text-gray-500 hover:text-blue-600 text-sm" data-id="article3">
+                            <i class="fas fa-robot mr-1"></i> Context
+                        </button>
+                    </div>
+                </div>
+                <!-- AI Context Panel -->
+                <div id="article3-context" class="ai-context-panel bg-gray-50 border-t border-gray-200">
+                    <div class="p-5">
+                        <div class="flex items-start">
+                            <div class="bg-gray-200 p-2 rounded-full mr-3">
+                                <i class="fas fa-robot text-gray-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Why This Matters</h4>
+                                <p class="text-gray-700 text-sm">This advancement could transform healthcare delivery and outcomes:</p>
+                                <ul class="list-disc pl-4 mt-1 text-sm text-gray-700 space-y-1">
+                                    <li>Potential to save thousands of lives through earlier treatment</li>
+                                    <li>Raises questions about doctor-AI collaboration models</li>
+                                    <li>May reduce healthcare costs through preventive care</li>
+                                    <li>Highlights need for regulatory frameworks for medical AI</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Signup -->
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-10">
+            <div class="md:flex items-center justify-between">
+                <div class="md:w-2/3 mb-6 md:mb-0">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Get AI Context Delivered Daily</h2>
+                    <p class="text-gray-600">Subscribe to our newsletter and receive AI-powered analysis of the day's most important stories.</p>
+                </div>
+                <div class="md:w-1/3">
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="flex-grow px-4 py-2 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-r-lg font-medium">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="border-t border-gray-200 pt-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="flex items-center mb-6 md:mb-0">
-                    <i class="fas fa-newspaper text-2xl text-blue-500 mr-2" aria-hidden="true"></i>
+                <div class="flex items-center mb-4 md:mb-0">
+                    <i class="fas fa-newspaper text-2xl text-blue-600 mr-2"></i>
                     <span class="text-lg font-medium">AI Context Newsstand</span>
                 </div>
-                <nav aria-label="Social media links">
-                    <div class="flex space-x-6">
-                        <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors" aria-label="Twitter">
-                            <i class="fab fa-twitter text-xl" aria-hidden="true"></i>
-                        </a>
-                        <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors" aria-label="Facebook">
-                            <i class="fab fa-facebook text-xl" aria-hidden="true"></i>
-                        </a>
-                        <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin text-xl" aria-hidden="true"></i>
-                        </a>
-                        <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors" aria-label="Instagram">
-                            <i class="fab fa-instagram text-xl" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </nav>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-blue-600"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
             <div class="mt-6 text-center md:text-left text-sm text-gray-500">
-                <p>© 2023 AI Context Newsstand. All rights reserved. | <a href="#" class="hover:text-blue-500 transition-colors">Privacy Policy</a> | <a href="#" class="hover:text-blue-500 transition-colors">Terms of Service</a></p>
+                <p>© 2023 AI Context Newsstand. All rights reserved. | <a href="#" class="hover:text-blue-600">Privacy Policy</a> | <a href="#" class="hover:text-blue-600">Terms of Service</a></p>
                 <p class="mt-2">AI Context Engine analyzes news significance using natural language processing and knowledge graphs.</p>
             </div>
         </footer>
@@ -453,112 +269,56 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Accessibility improvements for keyboard navigation
-            const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-            
-            // Toggle AI context panels with accessibility support
+            // Toggle AI context panels
             const contextButtons = document.querySelectorAll('.ai-context-btn');
             
             contextButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const panelId = this.getAttribute('data-id') + '-context';
                     const panel = document.getElementById(panelId);
-                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
                     
                     // Close all other panels first
                     document.querySelectorAll('.ai-context-panel').forEach(p => {
                         if (p.id !== panelId) {
                             p.classList.remove('active');
-                            const relatedButton = document.querySelector(`[data-id="${p.id.replace('-context', '')}"]`);
-                            if (relatedButton) {
-                                relatedButton.setAttribute('aria-expanded', 'false');
-                            }
                         }
                     });
                     
                     // Toggle current panel
                     panel.classList.toggle('active');
                     
-                    // Update ARIA attributes
-                    this.setAttribute('aria-expanded', !isExpanded);
-                    
-                    // Scroll to panel if it's opening (with smooth behavior for those who can perceive it)
+                    // Scroll to panel if it's opening
                     if (panel.classList.contains('active')) {
-                        // Use requestAnimationFrame to ensure the panel is visible before scrolling
-                        requestAnimationFrame(() => {
-                            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                        });
-                    }
-                });
-                
-                // Add keyboard support
-                button.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        this.click();
+                        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
                 });
             });
             
-            // Category filter functionality with keyboard accessibility
-            const categoryTags = document.querySelectorAll('nav[aria-label="News categories"] button');
+            // Simulate loading animation for AI context
+            const featuredBtn = document.querySelector('[data-id="featured"]');
+            featuredBtn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                icon.classList.add('pulse-animation');
+                setTimeout(() => {
+                    icon.classList.remove('pulse-animation');
+                }, 2000);
+            });
+            
+            // Category filter functionality
+            const categoryTags = document.querySelectorAll('.category-tag');
             categoryTags.forEach(tag => {
                 tag.addEventListener('click', function() {
                     // Remove active state from all tags
-                    categoryTags.forEach(t => {
-                        t.classList.remove('bg-blue-500', 'text-white');
-                        t.classList.add('bg-white', 'text-gray-800', 'hover:bg-gray-100');
-                        t.setAttribute('aria-current', 'false');
-                    });
+                    categoryTags.forEach(t => t.classList.remove('bg-blue-600', 'text-white'));
+                    categoryTags.forEach(t => t.classList.add('bg-gray-200', 'hover:bg-gray-300'));
                     
                     // Add active state to clicked tag
-                    this.classList.remove('bg-white', 'text-gray-800', 'hover:bg-gray-100');
-                    this.classList.add('bg-blue-500', 'text-white');
-                    this.setAttribute('aria-current', 'page');
-                    
-                    // Announce to screen readers
-                    const announcer = document.getElementById('announcer') || document.createElement('div');
-                    if (!document.getElementById('announcer')) {
-                        announcer.id = 'announcer';
-                        announcer.setAttribute('aria-live', 'polite');
-                        announcer.setAttribute('class', 'sr-only');
-                        document.body.appendChild(announcer);
-                    }
-                    announcer.textContent = `Filtering articles by ${this.textContent} category`;
+                    this.classList.remove('bg-gray-200', 'hover:bg-gray-300');
+                    this.classList.add('bg-blue-600', 'text-white');
                     
                     // In a real app, you would filter articles here
                 });
-                
-                // Add keyboard support
-                tag.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        this.click();
-                    }
-                });
             });
-            
-            // Add screen reader announcement area
-            const announcerElement = document.createElement('div');
-            announcerElement.id = 'announcer';
-            announcerElement.setAttribute('aria-live', 'polite');
-            announcerElement.setAttribute('class', 'sr-only');
-            document.body.appendChild(announcerElement);
-            
-            // Skip to content link for accessibility
-            const skipLink = document.createElement('a');
-            skipLink.href = '#latest-news-heading';
-            skipLink.className = 'sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:m-4 focus:px-4 focus:py-2 focus:bg-blue-500 focus:text-white focus:z-50 focus:rounded';
-            skipLink.textContent = 'Skip to main content';
-            document.body.insertBefore(skipLink, document.body.firstChild);
-            
-            // Reduced motion support
-            const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-            if (reducedMotionQuery.matches) {
-                document.querySelectorAll('.fade-in, .slide-up').forEach(el => {
-                    el.style.animation = 'none';
-                });
-            }
         });
     </script>
 </body>
